@@ -1,5 +1,7 @@
 package com.sk.rule.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,7 +42,7 @@ public class TradelaneRuleAudit {
 	private String actionTakenBy;
 
 	@Column(name = "ActionTimeStamp")
-	private String actionTimeStamp;
+	private LocalDateTime actionTimeStamp;
 
 	@Column(name = "Version")
 	private Integer version;

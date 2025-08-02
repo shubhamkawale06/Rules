@@ -1,5 +1,6 @@
 package com.sk.rule.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -58,13 +59,26 @@ public class RuleService {
 				.valueTwo(entry.getRuleDetails().getRuleTypeTwo().getValue())
 				.ruleTypeThree(entry.getRuleDetails().getRuleTypeThree().getRuleType())
 				.operatorThree(entry.getRuleDetails().getRuleTypeThree().getOperator())
-				.valueThree(entry.getRuleDetails().getRuleTypeThree().getValue()).build();
+				.valueThree(entry.getRuleDetails().getRuleTypeThree().getValue()).pol(entry.getRuleDetails().getPol())
+				.pod(entry.getRuleDetails().getPod()).plor(entry.getRuleDetails().getPlor())
+				.plod(entry.getRuleDetails().getPlod())
+				.originCountryIn(String.join(",", entry.getRuleDetails().getOrigCountryIn()))
+				.originCountryNotIn(String.join(",", entry.getRuleDetails().getOrigCountryNotIn()))
+				.destinationCountryIn(String.join(",", entry.getRuleDetails().getDesCountryIn()))
+				.destinationCountryNotIn(String.join(",", entry.getRuleDetails().getDesCountryNotIn()))
+				.originStationIn(String.join(",", entry.getRuleDetails().getOrigStationIn()))
+				.originStationNotIn(String.join(",", entry.getRuleDetails().getOrigStationNotIn()))
+				.destinationStationIn(String.join(",", entry.getRuleDetails().getDesStationIn()))
+				.destinationStationNotIn(String.join(",", entry.getRuleDetails().getDesStatioNotIn()))
+				.mandate(entry.getRuleDetails().getMandate())
+				.priority(entry.getRuleDetails().getPriority())
+				.build();
 	}
 
 	private TradelaneRuleAudit generateEntityForAudit(RuleRequestAttrDTO entry, Integer ruleId) {
 
 		return TradelaneRuleAudit.builder().tradelaneRuleID(ruleId).effectiveStartDate(entry.getEffStartDateTime())
 				.effectiveEndDate(entry.getEffStartDateTime()).actionTaken(entry.getActionTaken())
-				.actionTakenBy(entry.getActionTakenBy()).actionTimeStamp("").version(1).ruleStatus(0).build();
+				.actionTakenBy(entry.getActionTakenBy()).actionTimeStamp(LocalDateTime.now()).version(1).ruleStatus(0).build();
 	}
 }

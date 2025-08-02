@@ -27,4 +27,6 @@ public class RuleInsertRequestDetailsDTO {
 	private List<String> origStationNotIn;
 	private List<String> desStationIn;
 	private List<String> desStatioNotIn;
+	private String mandate;
+	private String priority;
 }
