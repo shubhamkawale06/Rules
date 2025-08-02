@@ -79,6 +79,6 @@ public class RuleService {
 
 		return TradelaneRuleAudit.builder().tradelaneRuleID(ruleId).effectiveStartDate(entry.getEffStartDateTime())
 				.effectiveEndDate(entry.getEffStartDateTime()).actionTaken(entry.getActionTaken())
-				.actionTakenBy(entry.getActionTakenBy()).actionTimeStamp(LocalDateTime.now()).version(1).ruleStatus(0).build();
+				.actionTakenBy(entry.getActionTakenBy()).actionTimeStamp(LocalDateTime.now()	).version(1).ruleStatus(0).build();
 	}
 }
