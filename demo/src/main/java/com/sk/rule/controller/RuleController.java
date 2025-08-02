@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sk.rule.dto.ResponseDTO;
 import com.sk.rule.dto.RuleRequestAttrDTO;
 import com.sk.rule.dto.RuleRequestBodyDTO;
+import com.sk.rule.exception.DataValidationException;
 import com.sk.rule.service.RuleService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,12 +36,13 @@ public class RuleController {
 			@RequestParam("UserId") Integer userId) {
 
 		boolean isDuplicateRequest = isDuplicateRequestMethod(ruleRequestBody);
-		if(isDuplicateRequest) {
+		if (isDuplicateRequest) {
 			ruleService.insertRule(ruleRequestBody, userId);
-		}else {
+		} else {
 			log.info("Duplicate found");
+			throw new DataValidationException("Duplicate Rules Found!!!!");
 		}
-		
+
 		return ResponseEntity.ok(ResponseDTO.builder().returnValue(1).errorMessage("Success").build());
 	}
 
