@@ -1,9 +1,11 @@
 package com.sk.rule.controller;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,11 +38,13 @@ public class RuleController {
 			@RequestParam("UserId") Integer userId) {
 
 		boolean isDuplicateRequest = isDuplicateRequestMethod(ruleRequestBody);
+		List<Integer> duplicateRowNumberFound = duplicateListRowIdentifier(ruleRequestBody);
 		if (isDuplicateRequest) {
 			ruleService.insertRule(ruleRequestBody, userId);
 		} else {
 			log.info("Duplicate found");
-			throw new DataValidationException("Duplicate Rules Found!!!!");
+			throw new DataValidationException(MessageFormat.format("Duplicate Rules Found at : {0}",
+					duplicateRowNumberFound.stream().map(Object::toString).collect(Collectors.joining(", "))));
 		}
 
 		return ResponseEntity.ok(ResponseDTO.builder().returnValue(1).errorMessage("Success").build());
@@ -57,6 +61,21 @@ public class RuleController {
 			}
 		}
 		return true;
+	}
+
+	private List<Integer> duplicateListRowIdentifier(RuleRequestBodyDTO ruleRequestBody) {
+		List<Integer> duplicateList = new ArrayList<>();
+		Set<RuleRequestAttrDTO> uniqueSet = new HashSet<>();
+		List<RuleRequestAttrDTO> duplicates = new ArrayList<>();
+		Integer index = 1;
+		for (RuleRequestAttrDTO ruleRequestAttrDTO : ruleRequestBody.getRuleReqBodyList()) {
+			if (!uniqueSet.add(ruleRequestAttrDTO)) {
+				duplicates.add(ruleRequestAttrDTO);
+				duplicateList.add(index);
+			}
+			index++;
+		}
+		return duplicateList;
 	}
 
 }
